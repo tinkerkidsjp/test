@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ひきざんマスター</title>
+<style>
+body {
+  text-align: center;
+  font-size: 30px;
+  font-family: sans-serif;
+}
+button {
+  font-size: 30px;
+  width: 65px;
+  height: 65px;
+  margin: 10px;
+}
+#start {
+  width: 150px;
+}
+</style>
+</head>
+<body>
+<p><div id="question">ひきざん</div></p>
+<button onclick="kaitou(7)">7</button>
+<button onclick="kaitou(8)">8</button>
+<button onclick="kaitou(9)">9</button><br>
+<button onclick="kaitou(4)">4</button>
+<button onclick="kaitou(5)">5</button>
+<button onclick="kaitou(6)">6</button><br>
+<button onclick="kaitou(1)">1</button>
+<button onclick="kaitou(2)">2</button>
+<button onclick="kaitou(3)">3</button><br><br>
+<button id="start" onclick="start()">はじめる</button>
+<script>
+var question = [];
+for (var i = 10; i < 19; i++) {
+  for (var j = 1; j < 10; j++) {
+    if (i - j < 10) {
+      question.push([i, j]);
+    }
+  }
+}
+var seikai;
+var num;
+var startTime;
+function start() {
+  for (var i = question.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = question[i];
+    question[i] = question[j];
+    question[j] = temp;
+  }
+  num = 0;
+  document.getElementById('question').textContent = question[num][0] + ' - ' + question[num][1];
+  seikai = question[num][0] - question[num][1];
+  document.getElementById('start').style.display = 'none';
+  startTime = Date.now();
+}
+function kaitou(kaitou) {
+  if (kaitou === seikai) {
+    num ++;
+    if (num === question.length) {
+      var time = Math.floor((Date.now() - startTime) / 100) / 10;
+      document.getElementById('question').textContent = 'タイム：' + time;
+      document.getElementById('start').style.display = 'inline';
+    } else {
+      document.getElementById('question').textContent = question[num][0] + ' - ' + question[num][1];
+      seikai = question[num][0] - question[num][1];
+    }
+  }
+}
+</script>
+</body>
+</html>
