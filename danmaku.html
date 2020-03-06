@@ -15,11 +15,11 @@ canvas {
   margin: 10px 0px 0px;
 }
 button {
-  margin: 0px 20px 0px;
+  margin: 0px 21px 0px;
   background-color: black;
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 10px;
 }
 p {
@@ -29,16 +29,59 @@ p {
 </head>
 <body>
 <canvas id="canvas" width="300" height="400"></canvas>
-<p><button>A</button><button>↑</button><button>B</button></p>
-<p><button>←</button><button>→</button></p>
-<p><button>↓</button></p>
+<p><button id="a">A</button><button id="up">↑</button><button id="b">B</button></p>
+<p><button id="left">←</button><button id="right">→</button></p>
+<p><button id="down">↓</button></p>
 </div>
 <script>
 var canvas = document.getElementById('canvas');
 /** @type {CanvasRenderingContext2D} */
 var ctx = canvas.getContext('2d');
-ctx.fillStyle = 'black';
-ctx.fillRect(0, 0, 300, 400);
+
+var x = 0;
+var y = 0;
+
+function draw() {
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, 300, 400);
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(x, y, 20, 20);
+}
+
+draw();
+
+var a = document.getElementById('a');
+var b = document.getElementById('b');
+var left = document.getElementById('left');
+var right = document.getElementById('right');
+var up = document.getElementById('up');
+var down = document.getElementById('down');
+
+left.addEventListener('click', leftmove, false);
+right.addEventListener('click', rightmove, false);
+up.addEventListener('click', upmove, false);
+down.addEventListener('click', downmove, false);
+
+function leftmove() {
+  x -= 20;
+  draw();
+}
+
+function rightmove() {
+  x += 20;
+  draw();
+}
+
+function upmove() {
+  y -= 20;
+  draw();
+}
+
+function downmove() {
+  y += 20;
+  draw();
+}
+
 </script>
 </body>
 </html>
