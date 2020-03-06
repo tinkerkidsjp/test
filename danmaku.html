@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>弾幕</title>
+<style>
+body {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  background-color: lightgrey;
+}
+canvas {
+  margin: 10px 0px 10px;
+}
+button {
+  margin: 0px 20px 0px;
+  background-color: black;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+p {
+  margin: 0px;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas" width="300" height="400"></canvas>
+<p><button>↑</button></p>
+<p><button>A</button><button>←</button><button>→</button><button>B</button></p>
+<p><button>↓</button></p>
+</div>
+<script>
+var canvas = document.getElementById('canvas');
+/** @type {CanvasRenderingContext2D} */
+var ctx = canvas.getContext('2d');
+ctx.fillStyle = 'black';
+ctx.fillRect(0, 0, 300, 400);
+</script>
+</body>
+</html>
