@@ -118,6 +118,10 @@ function Ball(id) {
         this.y = Math.floor(Math.random() * 381) + 10;
       }
     }
+    if (Math.pow((this.x - (square.x + 10)), 2) + Math.pow((this.y - (square.y + 10)), 2) < 400) {
+      clearInterval(timer);
+      gameover = true;
+    }
   }
   this.draw = function() {
     ctx.fillStyle = 'red';
@@ -133,6 +137,9 @@ for (var i = 0; i < 8; i++) {
   balls.push(new Ball(i));
 }
 
+//当たったらtrueになる
+var gameover = false;
+
 //canvas画面の更新
 function draw() {
   ctx.fillStyle = 'black';
@@ -141,6 +148,11 @@ function draw() {
   for (var i = 0; i < balls.length; i++) {
     balls[i].move();
     balls[i].draw();
+  }
+  if (gameover == true) {
+    ctx.font = '30px sans-serif';
+    ctx.fillStyle = 'green';
+    ctx.fillText('GAME OVER', 55, 200);
   }
 }
 
