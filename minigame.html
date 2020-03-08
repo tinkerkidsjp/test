@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>minigame</title>
+<style>
+body {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  background-color: lightgrey;
+}
+canvas {
+  margin: 10px 0px 0px;
+}
+button {
+  margin: 0px 20px 0px;
+  background-color: black;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+p {
+  margin: 5px;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas" width="300" height="400"></canvas>
+<p>
+  <button onclick="a()">A</button>
+  <button onclick="square.move('up')">↑</button>
+  <button onclick="b()">B</button>
+</p>
+<p>
+  <button onclick="square.move('left')">←</button>
+  <button onclick="square.move('right')">→</button>
+</p>
+<p>
+  <button onclick="square.move('down')">↓</button></p>
+</div>
+<script>
+//canvasに絵を描く準備
+var canvas = document.getElementById('canvas');
+/** @type {CanvasRenderingContext2D} */
+var ctx = canvas.getContext('2d');
+
+//squareオブジェクトの定義
+function Square() {
+  this.x = 140;
+  this.y = 380;
+  this.move = function(dir) {
+    switch (dir) {
+      case 'right':
+        this.x += 20;
+        break;
+      case 'left':
+        this.x -= 20;
+        break;
+      case 'down':
+        this.y += 20;
+        break;
+      case 'up':
+        this.y -= 20;
+        break;
+    }
+  }
+  this.draw = function(x, y) {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(x, y, 20, 20);
+  }
+}
+
+//squareオブジェクトの作成
+var square = new Square();
+
+//ballオブジェクトの定義
+function Ball() {
+  this.x = 150;
+  this.y = 0;
+  this.draw = function() {
+    this.y += 5;
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+    ctx.fill();
+    if (this.y > 400) {
+      this.y = 0;
+    }
+  }
+}
+
+//ballオブジェクトの作成
+var ball = new Ball();
+
+//canvas画面の更新
+function draw() {
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, 300, 400);
+  square.draw(square.x, square.y);
+  ball.draw();
+}
+
+//20ミリ秒ごとにdraw関数を実行
+var timer = setInterval(draw, 20);
+
+</script>
+</body>
+</html>
