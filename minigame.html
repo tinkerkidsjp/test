@@ -50,7 +50,7 @@ var ctx = canvas.getContext('2d');
 //squareオブジェクトの定義
 function Square() {
   this.x = 140;
-  this.y = 380;
+  this.y = 190;
   this.move = function(dir) {
     switch (dir) {
       case 'right':
@@ -77,30 +77,71 @@ function Square() {
 var square = new Square();
 
 //ballオブジェクトの定義
-function Ball() {
-  this.x = 150;
-  this.y = 0;
+function Ball(id) {
+  this.id = id;
+  if (this.id < 2) {
+    this.x = Math.floor(Math.random() * 281) + 10;
+    this.y = 0;
+  } else if (this.id < 4) {
+    this.x = Math.floor(Math.random() * 281) + 10;
+    this.y = 400;
+  } else if (this.id < 6) {
+    this.x = 0;
+    this.y = Math.floor(Math.random() * 381) + 10;
+  } else if (this.id < 8) {
+    this.x = 300;
+    this.y = Math.floor(Math.random() * 381) + 10;
+  } 
+  this.move = function() {
+    if (this.id < 2) {
+      this.y += 2;
+      if (this.y > 400) {
+        this.x = Math.floor(Math.random() * 281) + 10;
+        this.y = 0;
+      }
+    } else if (this.id < 4) {
+      this.y -= 2;
+      if (this.y < 0) {
+        this.x = Math.floor(Math.random() * 281) + 10;
+        this.y = 400;
+      }
+    } else if (this.id < 6) {
+      this.x += 2;
+      if (this.x > 300) {
+        this.x = 0;
+        this.y = Math.floor(Math.random() * 381) + 10;
+      }
+    } else if (this.id < 8) {
+      this.x -= 2;
+      if (this.x < 0) {
+        this.x = 300;
+        this.y = Math.floor(Math.random() * 381) + 10;
+      }
+    }
+  }
   this.draw = function() {
-    this.y += 5;
     ctx.fillStyle = 'red';
     ctx.beginPath();
     ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     ctx.fill();
-    if (this.y > 400) {
-      this.y = 0;
-    }
   }
 }
 
 //ballオブジェクトの作成
-var ball = new Ball();
+var balls = []
+for (var i = 0; i < 8; i++) {
+  balls.push(new Ball(i));
+}
 
 //canvas画面の更新
 function draw() {
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, 300, 400);
   square.draw(square.x, square.y);
-  ball.draw();
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].move();
+    balls[i].draw();
+  }
 }
 
 //20ミリ秒ごとにdraw関数を実行
