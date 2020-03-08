@@ -94,13 +94,13 @@ function Ball(id) {
   } 
   this.move = function() {
     if (this.id < 2) {
-      this.y += 2;
+      this.y += 3;
       if (this.y > 400) {
         this.x = Math.floor(Math.random() * 281) + 10;
         this.y = 0;
       }
     } else if (this.id < 4) {
-      this.y -= 2;
+      this.y -= 3;
       if (this.y < 0) {
         this.x = Math.floor(Math.random() * 281) + 10;
         this.y = 400;
@@ -152,7 +152,7 @@ function draw() {
   if (gameover == true) {
     ctx.font = '30px sans-serif';
     ctx.fillStyle = 'green';
-    ctx.fillText('GAME OVER', 55, 200);
+    ctx.fillText('GAME OVER...', 10, 390);
   }
 }
 
