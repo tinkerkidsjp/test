@@ -15,11 +15,11 @@ canvas {
   margin: 10px 0px 0px;
 }
 button {
-  margin: 0px 21px 0px;
+  margin: 0px 20px 0px;
   background-color: black;
   color: white;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
 }
 p {
@@ -29,58 +29,109 @@ p {
 </head>
 <body>
 <canvas id="canvas" width="300" height="400"></canvas>
-<p><button id="a">A</button><button id="up">↑</button><button id="b">B</button></p>
-<p><button id="left">←</button><button id="right">→</button></p>
-<p><button id="down">↓</button></p>
+<p>
+  <button onclick="a()">A</button>
+  <button onclick="square.move('up')">↑</button>
+  <button onclick="b()">B</button>
+</p>
+<p>
+  <button onclick="square.move('left')">←</button>
+  <button onclick="square.move('right')">→</button>
+</p>
+<p>
+  <button onclick="square.move('down')">↓</button></p>
 </div>
 <script>
+//canvasに絵を描く準備
 var canvas = document.getElementById('canvas');
 /** @type {CanvasRenderingContext2D} */
 var ctx = canvas.getContext('2d');
 
-var x = 0;
-var y = 0;
+//squareオブジェクトの定義
+function Square() {
+  this.x = 145;
+  this.y = 385;
+  this.move = function(dir) {
+    switch (dir) {
+      case 'right':
+        this.x += 10;
+        break;
+      case 'left':
+        this.x -= 10;
+        break;
+      case 'down':
+        this.y += 10;
+        break;
+      case 'up':
+        this.y -= 10;
+        break;
+    }
+  }
+  this.draw = function(x, y) {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(x, y, 10, 10);
+  }
+}
 
+//squareオブジェクトの作成
+var square = new Square();
+
+//ballオブジェクトの定義
+function Ball(dir) {
+  this.dir = dir;
+  this.x = 150;
+  this.y = 100;
+  this.dx = Math.cos(this.dir / 360 * 2 * Math.PI) / 4;
+  this.dy = Math.sin(this.dir / 360 * 2 * Math.PI) / 4;
+  this.move = function() {
+    this.x = this.x + this.dx;
+    this.y = this.y + this.dy;
+    if (Math.pow((this.x - (square.x + 5)), 2) + Math.pow((this.y - (square.y + 5)), 2) < 100) {
+      clearInterval(timer);
+      gameover = true;
+    }
+  }
+  this.draw = function() {
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
+//ballオブジェクトの作成
+var balls = []
+
+//当たったらtrueになる
+var gameover = false;
+
+//ballの向き
+var dir = 0;
+
+//canvas画面の更新
 function draw() {
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, 300, 400);
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(x, y, 20, 20);
+  square.draw(square.x, square.y);
+  balls.push(new Ball(dir));
+  dir += 5;
+  for (var i in balls) {
+    balls[i].move();
+    balls[i].draw();
+    if (balls[i].x < -5 || balls[i].x > 305 || balls[i].y < -5 || balls[i].y > 405) {
+      balls.splice(i, 1);
+    }
+  }
+  if (gameover == true) {
+    ctx.font = '30px sans-serif';
+    ctx.fillStyle = 'green';
+    ctx.fillText('GAME OVER...', 10, 390);
+    console.log(balls.length);
+  }
 }
 
-draw();
-
-var a = document.getElementById('a');
-var b = document.getElementById('b');
-var left = document.getElementById('left');
-var right = document.getElementById('right');
-var up = document.getElementById('up');
-var down = document.getElementById('down');
-
-left.addEventListener('click', leftmove, false);
-right.addEventListener('click', rightmove, false);
-up.addEventListener('click', upmove, false);
-down.addEventListener('click', downmove, false);
-
-function leftmove() {
-  x -= 20;
-  draw();
-}
-
-function rightmove() {
-  x += 20;
-  draw();
-}
-
-function upmove() {
-  y -= 20;
-  draw();
-}
-
-function downmove() {
-  y += 20;
-  draw();
-}
+//20ミリ秒ごとにdraw関数を実行
+var timer = setInterval(draw, 20);
 
 </script>
 </body>
